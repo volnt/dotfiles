@@ -124,3 +124,4 @@
 
 (provide '.emacs)
 ;;; .emacs ends here
+(put 'upcase-region 'disabled nil)

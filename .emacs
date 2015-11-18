@@ -104,6 +104,13 @@
 ;; remove that fucking bell
 (setq visible-bell 1)
 
+;; sudo-save
+(defun sudo-save ()
+  (interactive)
+  (if (not buffer-file-name)
+      (write-file (concat "/sudo:root@localhost:" (ido-read-file-name "File:")))
+    (write-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
 ;; custom vars
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

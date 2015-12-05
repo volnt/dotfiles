@@ -47,6 +47,9 @@
 	       :after (progn
 			(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 			(add-hook 'python-mode-hook #'rainbow-delimiters-mode)))
+	(:name jedi
+               :before (global-set-key (kbd "C-c ;") 'jedi:goto-definition)
+	       :after (add-hook 'python-mode-hook 'jedi:setup))
         ))
 
 ;;; Define & install my packages

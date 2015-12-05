@@ -29,7 +29,9 @@
                          (global-set-key (kbd "C-c s") 'magit-status))
                :after (setq magit-last-seen-setup-instructions "1.4.0"))
         (:name flycheck
-               :after (add-hook 'after-init-hook #'global-flycheck-mode))
+               :after (progn
+                        (add-hook 'after-init-hook #'global-flycheck-mode)
+                        (setq flycheck-flake8-maximum-line-length 120)))
         (:name undo-tree
                :after (global-undo-tree-mode))
         (:name projectile

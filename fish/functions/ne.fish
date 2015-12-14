@@ -1,3 +1,3 @@
 function ne
-	emacs -nw $argv
+         emacsclient -t --alternate-editor="" $argv
 end

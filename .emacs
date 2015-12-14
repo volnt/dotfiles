@@ -67,6 +67,7 @@
          nginx-mode
          python-mode
          fish-mode      ; don't forget to run (el-get-elpa-build-local-recipes)
+         lua-mode
          yaml-mode)
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
 (el-get 'sync my-packages)

@@ -91,6 +91,9 @@
 ;;; Add the column in the power bar
 (setq column-number-mode t)
 
+;;; Remove the menu bar
+(menu-bar-mode -1)
+
 ;;; Show & delete trailing whitespaces on save
 (setq show-trailing-whitespace t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)

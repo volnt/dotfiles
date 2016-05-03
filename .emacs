@@ -44,6 +44,11 @@
                :after (load-theme 'solarized t))
         (:name multiple-cursors
                :before (global-set-key (kbd "C-c m") 'mc/mark-all-in-region))
+        (:name drag-stuff
+               :before (progn
+                         (global-set-key (kbd "ESC <down>") 'drag-stuff-down)
+                         (global-set-key (kbd "ESC <up>") 'drag-stuff-up))
+               :after (drag-stuff-global-mode))
 	(:name rainbow-delimiters
 	       :after (progn
 			(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)

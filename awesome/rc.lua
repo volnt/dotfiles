@@ -306,15 +306,12 @@ for s = 1, screen.count() do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(spr)
     right_layout:add(arrl)
-    right_layout_add(mpdicon, mpdwidget)
-    right_layout_add(volicon, volumewidget)
-    --right_layout_add(mailicon, mailwidget)
+    right_layout_add(neticon,netwidget)
     right_layout_add(memicon, memwidget)
     right_layout_add(cpuicon, cpuwidget)
     right_layout_add(tempicon, tempwidget)
     right_layout_add(fsicon, fswidget)
     right_layout_add(baticon, batwidget)
-    right_layout_add(neticon,netwidget)
     right_layout_add(mytextclock, spr)
     right_layout_add(mylayoutbox[s])
 

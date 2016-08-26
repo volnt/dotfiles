@@ -82,13 +82,6 @@
 ;;;  Configuration
 ;;;
 
-;;; Keybinding inserting pdb breakpoint
-(defun insert_breakpoint ()
-  (interactive)
-  (insert "import pdb; pdb.set_trace()\n"))
-
-(add-hook 'python-mode-hook 'local-set-key (kbd "C-c C-b") 'insert_breakpoint)
-
 ;;; Indent and offset configuration
 (setq-default indent-tabs-mode nil)
 (setq-default sgml-basic-offset 4)

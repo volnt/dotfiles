@@ -445,6 +445,16 @@ globalkeys = awful.util.table.join(
             volumewidget.update()
         end),
 
+    -- Luminosity control
+    awful.key({ altkey, "Control", }, "Up",
+        function ()
+            os.execute("xbacklight -inc 10 -time 0")
+        end),
+    awful.key({ altkey, "Control", }, "Down",
+        function ()
+            os.execute("xbacklight -dec 10 -time 0")
+    end),
+
     -- User programs
     awful.key({ modkey }, "q", function () awful.util.spawn(browser) end),
     awful.key({ modkey }, "s", function () awful.util.spawn(browser2) end),

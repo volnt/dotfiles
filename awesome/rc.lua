@@ -60,13 +60,17 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-darker/t
 -- common
 modkey     = "Mod4"
 altkey     = "Mod1"
-terminal   = "urxvt"
-editor     = "ne"
+terminal   = "urxvtc" or "urxvt"
+editor     = os.getenv("EDITOR") or "emacs -nw" or "vi"
+editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
 browser    = "google-chrome"
 browser2   = "firefox"
 gui_editor = "emacs"
+mail       = "thunderbird"
+iptraf     = terminal .. " -g 180x54-20+34 -e sudo iptraf-ng -i all "
+musicplr   = terminal .. " -g 130x34-320+16 -e ncmpcpp "
 
 local layouts = {
     awful.layout.suit.floating,
@@ -80,7 +84,7 @@ local layouts = {
 -- {{{ Tags
 tags = {
    names = { "term", "www", "media", "mail", "misc"},
-   layout = { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2] }
+   layout = { layouts[4], layouts[4], layouts[4], layouts[4], layouts[4] }
 }
 
 for s = 1, screen.count() do
@@ -119,7 +123,6 @@ mytextclock = lain.widgets.abase({
 
 -- calendar
 lain.widgets.calendar:attach(mytextclock, { font_size = 10 })
-
 
 -- MEM
 memicon = wibox.widget.imagebox(beautiful.widget_mem)
@@ -187,11 +190,13 @@ volumewidget = lain.widgets.alsa({
         end
 
         widget:set_text(" " .. volume_now.level .. "% ")
-    end
+    end,
+    cmd = "amixer -D pulse"
 })
 
 -- Net
 neticon = wibox.widget.imagebox(beautiful.widget_net)
+neticon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn_with_shell(iptraf) end)))
 netwidget = lain.widgets.net({
     settings = function()
         widget:set_markup(markup("#7AC82E", " " .. net_now.received)
@@ -213,13 +218,13 @@ mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
+   awful.button({ }, 1, awful.tag.viewonly),
+   awful.button({ modkey }, 1, awful.client.movetotag),
+   awful.button({ }, 3, awful.tag.viewtoggle),
+   awful.button({ modkey }, 3, awful.client.toggletag),
+   awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+   awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+)
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
@@ -307,6 +312,7 @@ for s = 1, screen.count() do
     right_layout:add(spr)
     right_layout:add(arrl)
     right_layout_add(neticon,netwidget)
+    right_layout_add(volicon, volumewidget)
     right_layout_add(memicon, memwidget)
     right_layout_add(cpuicon, cpuwidget)
     right_layout_add(tempicon, tempwidget)
@@ -337,7 +343,10 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     -- Take a screenshot
     -- https://github.com/copycat-killer/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("screenshot") end),
+    awful.key({ altkey }, "p", function() os.execute("gnome-screenshot -i") end),
+
+    -- Lock screen
+    awful.key({ modkey }, "l", function() os.execute("xtrlock -b") end),
 
     -- Tag browsing
     awful.key({ modkey }, "Left",   awful.tag.viewprev       ),
@@ -396,12 +405,12 @@ globalkeys = awful.util.table.join(
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+    awful.key({ modkey, "Control" }, "Up", function () awful.screen.focus_relative( 1) end),
+    awful.key({ modkey, "Control" }, "Down", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey,           }, "Tab",
         function ()
-            awful.client.focus.byidx(-1)
+           awful.client.focus.byidx(-1)
             if client.focus then
                 client.focus:raise()
             end
@@ -429,19 +438,24 @@ globalkeys = awful.util.table.join(
     awful.key({ altkey,           }, "h",      function () fswidget.show(7) end),
 
     -- ALSA volume control
-    awful.key({ }, "XF86AudioRaiseVolume",
+    awful.key({ altkey }, "Up",
         function ()
-            os.execute(string.format("amixer set %s 1%%+", volumewidget.channel))
+            os.execute("amixer -D pulse sset Master 2%+")
             volumewidget.update()
         end),
-    awful.key({ }, "XF86AudioLowerVolume",
+    awful.key({ altkey }, "Down",
         function ()
-            os.execute(string.format("amixer set %s 1%%-", volumewidget.channel))
+            os.execute("amixer -D pulse sset Master 2%-")
             volumewidget.update()
         end),
-    awful.key({ }, "XF86AudioMute",
+    awful.key({ altkey }, "m",
         function ()
             os.execute(string.format("amixer set %s toggle", volumewidget.channel))
+            volumewidget.update()
+        end),
+    awful.key({ altkey, "Control" }, "m",
+        function ()
+            os.execute(string.format("amixer set %s 100%%", volumewidget.channel))
             volumewidget.update()
         end),
 
@@ -453,11 +467,15 @@ globalkeys = awful.util.table.join(
     awful.key({ altkey, "Control", }, "Down",
         function ()
             os.execute("xbacklight -dec 10 -time 0")
-    end),
+        end),
+
+    -- Copy to clipboard
+    awful.key({ modkey }, "c", function () os.execute("xsel -p -o | xsel -i -b") end),
 
     -- User programs
     awful.key({ modkey }, "q", function () awful.util.spawn(browser) end),
-    awful.key({ modkey }, "s", function () awful.util.spawn(browser2) end),
+    awful.key({ modkey }, "i", function () awful.util.spawn(browser2) end),
+    awful.key({ modkey }, "s", function () awful.util.spawn(gui_editor) end),
 
     -- Prompt
     awful.key({ modkey }, "r", function () mypromptbox[mouse.screen]:run() end),
@@ -476,7 +494,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "y",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
@@ -568,13 +586,6 @@ awful.rules.rules = {
 
     { rule = { instance = "plugin-container" },
           properties = { tag = tags[1][1] } },
-
-	  { rule = { class = "Gimp" },
-     	    properties = { tag = tags[1][4] } },
-
-    { rule = { class = "Gimp", role = "gimp-image-window" },
-          properties = { maximized_horizontal = true,
-                         maximized_vertical = true } },
 }
 -- }}}
 

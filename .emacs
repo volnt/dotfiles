@@ -43,7 +43,9 @@
         (:name color-theme-solarized
                :after (load-theme 'solarized t))
         (:name multiple-cursors
-               :before (global-set-key (kbd "C-c m") 'mc/mark-all-in-region))
+               :before (progn
+                         (global-set-key (kbd "C-c m") 'mc/mark-all-in-region)
+                         (global-set-key (kbd "C-c :") 'mc/edit-lines)))
         (:name drag-stuff
                :before (progn
                          (global-set-key (kbd "ESC <down>") 'drag-stuff-down)

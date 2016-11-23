@@ -20,7 +20,7 @@ local brightness = {}
 
 local function worker(args)
     local args     = args or {}
-    local timeout  = args.timeout or 0
+    local timeout  = args.timeout or 5
     local settings = args.settings or function() end
 
     brightness.cmd     = args.cmd or "xbacklight"

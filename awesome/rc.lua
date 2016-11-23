@@ -15,6 +15,8 @@ local beautiful = require("beautiful")
 local naughty   = require("naughty")
 local drop      = require("scratchdrop")
 local lain      = require("lain")
+local brightness= require("brightness")
+
 -- }}}
 
 -- {{{ Error handling
@@ -194,6 +196,13 @@ volumewidget = lain.widgets.alsa({
     cmd = "amixer -D pulse"
 })
 
+brighticon = wibox.widget.imagebox(beautiful.net_wired)
+brightnesswidget = brightness({
+    settings = function()
+        widget:set_text(" " .. brightness_now.level + 1 .. "% ")
+    end
+})
+
 -- Net
 neticon = wibox.widget.imagebox(beautiful.widget_net)
 neticon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn_with_shell(iptraf) end)))
@@ -313,6 +322,7 @@ for s = 1, screen.count() do
     right_layout:add(arrl)
     right_layout_add(neticon,netwidget)
     right_layout_add(volicon, volumewidget)
+    right_layout_add(brightsicon, brightnesswidget)
     right_layout_add(memicon, memwidget)
     right_layout_add(cpuicon, cpuwidget)
     right_layout_add(tempicon, tempwidget)
@@ -459,14 +469,14 @@ globalkeys = awful.util.table.join(
             volumewidget.update()
         end),
 
-    -- Luminosity control
+    -- Brightness control
     awful.key({ altkey, "Control", }, "Up",
         function ()
-            os.execute("xbacklight -inc 10 -time 0")
+            os.execute("xbacklight -inc 5 -time 0")
         end),
     awful.key({ altkey, "Control", }, "Down",
         function ()
-            os.execute("xbacklight -dec 10 -time 0")
+            os.execute("xbacklight -dec 5 -time 0")
         end),
 
     -- Copy to clipboard

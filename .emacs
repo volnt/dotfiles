@@ -26,7 +26,6 @@
                :before (progn
                          (global-set-key (kbd "C-c b") 'magit-blame)
                          (global-set-key (kbd "C-c g") 'git-grep)
-                         (global-set-key (kbd "C-c x") 'magit-reset-hard)
                          (global-set-key (kbd "C-c s") 'magit-status))
                :after (setq magit-last-seen-setup-instructions "1.4.0"))
         (:name flycheck

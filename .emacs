@@ -52,7 +52,16 @@
 	(:name jedi
                :before (global-set-key (kbd "C-c ;") 'jedi:goto-definition)
 	       :after (add-hook 'python-mode-hook 'jedi:setup))
-        ))
+        (:name py-autopep8
+               :after (progn
+                        (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+                        (setq py-autopep8-options '("--max-line-length=120"))))
+        (:name py-isort
+               :after (progn
+                        (add-hook 'before-save-hook 'py-isort-before-save)
+                        (setq py-isort-options '("-w 120" "-ls"))))
+	))
+
 
 ;;; Define & install my packages
 (setq my-packages

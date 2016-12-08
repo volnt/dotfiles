@@ -60,6 +60,8 @@
                :after (progn
                         (add-hook 'before-save-hook 'py-isort-before-save)
                         (setq py-isort-options '("-w 120" "-ls"))))
+        (:name ansi-color
+               :after (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 	))
 
 

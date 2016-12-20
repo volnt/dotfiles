@@ -44,7 +44,7 @@
         (:name multiple-cursors
                :before (progn
                          (global-set-key (kbd "C-c m") 'mc/mark-all-in-region)
-                         (global-set-key (kbd "C-c :") 'mc/edit-lines)))
+                         (global-set-key (kbd "C-c l") 'mc/edit-lines)))
 	(:name rainbow-delimiters
 	       :after (progn
 			(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)

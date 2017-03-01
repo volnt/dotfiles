@@ -305,7 +305,7 @@ for s = 1, screen.count() do
         if right_layout_toggle then
             right_layout:add(arrl_ld)
             for i, n in pairs(arg) do
-                right_layout:add(wibox.widget.background(n ,beautiful.bg_focus))
+                right_layout:add(wibox.widget.background(n, beautiful.bg_focus))
             end
         else
             right_layout:add(arrl_dl)

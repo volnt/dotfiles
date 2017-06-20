@@ -103,7 +103,12 @@
 (setq show-trailing-whitespace t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;;; Enable ido-mode
+(global-set-key (kbd "M-C-j") 'enlarge-window)
+(global-set-key (kbd "M-C-k") 'shrink-window)
+(global-set-key (kbd "M-C-l") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-C-h") 'shrink-window-horizontally)
+
+;;; enable ido-mode
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)

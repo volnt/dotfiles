@@ -352,8 +352,7 @@ root.buttons(awful.util.table.join(
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     -- Take a screenshot
-    -- https://github.com/copycat-killer/dots/blob/master/bin/screenshot
-    awful.key({ altkey }, "p", function() os.execute("gnome-screenshot -i") end),
+    awful.key({ modkey }, "p", function() awful.util.spawn("gnome-screenshot -i") end),
 
     -- Lock screen
     awful.key({ modkey }, "l", function() os.execute("xtrlock -b") end),

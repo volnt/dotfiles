@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Emacs
-ln -fs $PWD/.emacs $HOME/.emacs
+ln -fs $PWD/emacs.d $HOME/.emacs.d
 
 # Urxvt
 ln -fs $PWD/.Xdefaults $HOME/.Xdefaults

@@ -1,6 +1,6 @@
 # Welcome to my dotfiles repo
 
-Here are stored my emacs, fish, awesome and urxvt configuration.
+Here are stored my emacs, awesome and urxvt configuration.
 
 # Install
 
